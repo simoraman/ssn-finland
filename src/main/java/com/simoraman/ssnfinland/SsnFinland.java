@@ -16,6 +16,11 @@ public class SsnFinland
         return extractCheckSum(ssn) == calculateCheckSum(ssn);
     }
 
+    public Identity parse(String ssn) {
+        int sexBit = Integer.parseInt(ssn.substring(9,10));
+        String sex = sexBit % 2 == 0 ? "female" : "male";
+        return new Identity(isValidSsn(ssn), sex);
+    }
     private boolean hasValidCentury(String ssn) {
         String whitelist = "+-A";
         char centuryMark = ssn.charAt(6);
