@@ -7,7 +7,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple SsnFinland.
  */
-public class SsnFinlandTest
+public class SsnValidityTest
     extends TestCase
 {
     private SsnFinland ssn;
@@ -16,7 +16,7 @@ public class SsnFinlandTest
      *
      * @param testName name of the test case
      */
-    public SsnFinlandTest(String testName )
+    public SsnValidityTest(String testName )
     {
         super( testName );
     }
@@ -26,7 +26,7 @@ public class SsnFinlandTest
      */
     public static Test suite()
     {
-        return new TestSuite( SsnFinlandTest.class );
+        return new TestSuite( SsnValidityTest.class );
     }
 
     protected void setUp() {
