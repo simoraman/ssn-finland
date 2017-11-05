@@ -26,7 +26,9 @@ public class SsnValidityTest
      */
     public static Test suite()
     {
-        return new TestSuite( SsnValidityTest.class );
+        TestSuite suite = new TestSuite( SsnValidityTest.class );
+        suite.addTestSuite(SsnParseTest.class);
+        return suite;
     }
 
     protected void setUp() {

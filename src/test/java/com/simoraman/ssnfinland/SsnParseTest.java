@@ -12,11 +12,6 @@ public class SsnParseTest extends TestCase {
         super( testName );
     }
 
-    public static Test suite()
-    {
-        return new TestSuite( SsnValidityTest.class );
-    }
-
     protected void setUp() {
         ssn = new SsnFinland();
     }
@@ -27,7 +22,6 @@ public class SsnParseTest extends TestCase {
         assertTrue(i.isValid);
         assertEquals("male", i.sex);
     }
-
 
     public void testParseValidFemale() {
         String validMaleSsn = "070585-848U";
