@@ -24,9 +24,15 @@ public class SsnParseTest extends TestCase {
     }
 
     public void testParseValidFemale() {
-        String validMaleSsn = "070585-848U";
-        Identity i = ssn.parse(validMaleSsn);
+        String validFemalSsn = "070585-848U";
+        Identity i = ssn.parse(validFemalSsn);
         assertTrue(i.isValid);
         assertEquals("female", i.sex);
+    }
+
+    public void testParseAge() {
+        String femaleAged32 = "070585-848U";
+        Identity i = ssn.parse(femaleAged32);
+        assertEquals(32, i.age);
     }
 }

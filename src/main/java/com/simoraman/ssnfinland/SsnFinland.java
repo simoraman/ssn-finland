@@ -1,8 +1,11 @@
 package com.simoraman.ssnfinland;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 import java.util.Hashtable;
 
 public class SsnFinland
@@ -19,8 +22,25 @@ public class SsnFinland
     public Identity parse(String ssn) {
         int sexBit = Integer.parseInt(ssn.substring(9,10));
         String sex = sexBit % 2 == 0 ? "female" : "male";
-        return new Identity(isValidSsn(ssn), sex);
+        String datePart = ssn.substring(0,6);
+        int age = parseAge(datePart);
+        return new Identity(isValidSsn(ssn), sex, age);
     }
+
+    private int parseAge(String datePart) {
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("ddMM")
+                .appendValueReduced(ChronoField.YEAR, 2, 2, 1900)
+                .toFormatter();
+        try {
+            LocalDate d = LocalDate.parse(datePart, formatter);
+            LocalDate now = LocalDate.now();
+            return Period.between(d, now).getYears();
+        } catch (DateTimeParseException e) {
+            return 0;
+        }
+    }
+
     private boolean hasValidCentury(String ssn) {
         String whitelist = "+-A";
         char centuryMark = ssn.charAt(6);
