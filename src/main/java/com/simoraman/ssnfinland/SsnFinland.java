@@ -8,13 +8,12 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Hashtable;
 
-public class SsnFinland
-{
+public class SsnFinland {
     public boolean isValidSsn(String ssn) {
-        if(ssn == null || ssn.isEmpty()) return false;
-        if(ssn.length() != 11) return false;
-        if(!hasValidCentury(ssn)) return false;
-        if(!hasValidDate(ssn)) return false;
+        if (ssn == null || ssn.isEmpty()) return false;
+        if (ssn.length() != 11) return false;
+        if (!hasValidCentury(ssn)) return false;
+        if (!hasValidDate(ssn)) return false;
 
         return extractCheckSum(ssn) == calculateCheckSum(ssn);
     }
@@ -48,7 +47,7 @@ public class SsnFinland
     }
 
     private boolean hasValidDate(String ssn) {
-        String datePart = ssn.substring(0,6);
+        String datePart = ssn.substring(0, 6);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         try {
             LocalDate.parse(datePart, formatter);
@@ -59,7 +58,7 @@ public class SsnFinland
     }
 
     private char calculateCheckSum(String ssn) {
-        String birthDayPart = ssn.substring(0,6);
+        String birthDayPart = ssn.substring(0, 6);
         String individualNumber = ssn.substring(7, 10);
 
         int ddmmyyzzz = Integer.parseInt(birthDayPart + individualNumber);
