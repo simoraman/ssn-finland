@@ -35,4 +35,10 @@ public class SsnParseTest extends TestCase {
         Identity i = ssn.parse(femaleAged32);
         assertEquals(32, i.age);
     }
+
+    public void testParseAge19thCentury() {
+        String femaleAged32 = "040699+8092";
+        Identity i = ssn.parse(femaleAged32);
+        assertEquals(118, i.age);
+    }
 }

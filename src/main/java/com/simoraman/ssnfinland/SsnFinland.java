@@ -19,25 +19,32 @@ public class SsnFinland {
     }
 
     public Identity parse(String ssn) {
-        int sexBit = Integer.parseInt(ssn.substring(9,10));
+        int sexBit = Integer.parseInt(ssn.substring(9, 10));
         String sex = sexBit % 2 == 0 ? "female" : "male";
-        String datePart = ssn.substring(0,6);
-        int age = parseAge(datePart);
+        LocalDate birthDate = parseDate(ssn);
+        int age = calculateAge(birthDate);
         return new Identity(isValidSsn(ssn), sex, age);
     }
 
-    private int parseAge(String datePart) {
+    private LocalDate parseDate(String ssn) {
+        char centuryMark = ssn.charAt(6);
+        int century = 1900;
+        if (centuryMark == '+') {
+            century = 1800;
+        }
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .appendPattern("ddMM")
-                .appendValueReduced(ChronoField.YEAR, 2, 2, 1900)
+                .appendValueReduced(ChronoField.YEAR, 2, 2, century)
                 .toFormatter();
-        try {
-            LocalDate d = LocalDate.parse(datePart, formatter);
-            LocalDate now = LocalDate.now();
-            return Period.between(d, now).getYears();
-        } catch (DateTimeParseException e) {
-            return 0;
-        }
+
+        String datePart = ssn.substring(0, 6);
+        LocalDate parsedDate = LocalDate.parse(datePart, formatter);
+        return parsedDate;
+    }
+
+    private int calculateAge(LocalDate birthDate) {
+        LocalDate now = LocalDate.now();
+        return Period.between(birthDate, now).getYears();
     }
 
     private boolean hasValidCentury(String ssn) {
