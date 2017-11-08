@@ -31,6 +31,8 @@ public class SsnFinland {
         int century = 1900;
         if (centuryMark == '+') {
             century = 1800;
+        } else if (centuryMark == 'A') {
+            century = 2000;
         }
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .appendPattern("ddMM")

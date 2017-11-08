@@ -7,9 +7,8 @@ import junit.framework.TestSuite;
 public class SsnParseTest extends TestCase {
     private SsnFinland ssn;
 
-    public SsnParseTest(String testName )
-    {
-        super( testName );
+    public SsnParseTest(String testName) {
+        super(testName);
     }
 
     protected void setUp() {
@@ -40,5 +39,11 @@ public class SsnParseTest extends TestCase {
         String femaleAged32 = "040699+8092";
         Identity i = ssn.parse(femaleAged32);
         assertEquals(118, i.age);
+    }
+
+    public void testParseAge21stCentury() {
+        String femaleAged32 = "020500A080W";
+        Identity i = ssn.parse(femaleAged32);
+        assertEquals(17, i.age);
     }
 }
