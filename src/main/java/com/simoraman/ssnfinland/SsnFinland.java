@@ -19,11 +19,15 @@ public class SsnFinland {
     }
 
     public Identity parse(String ssn) {
-        int sexBit = Integer.parseInt(ssn.substring(9, 10));
-        String sex = sexBit % 2 == 0 ? "female" : "male";
-        LocalDate birthDate = parseDate(ssn);
-        int age = calculateAge(birthDate);
-        return new Identity(isValidSsn(ssn), sex, age);
+        boolean isValid = isValidSsn(ssn);
+        if(isValid) {
+            int sexBit = Integer.parseInt(ssn.substring(9, 10));
+            String sex = sexBit % 2 == 0 ? "female" : "male";
+            LocalDate birthDate = parseDate(ssn);
+            int age = calculateAge(birthDate);
+            return new Identity(true, sex, age);
+        }
+        return new Identity(false, null, 0);
     }
 
     private LocalDate parseDate(String ssn) {

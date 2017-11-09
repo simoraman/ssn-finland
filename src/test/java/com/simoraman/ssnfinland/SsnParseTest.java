@@ -46,4 +46,11 @@ public class SsnParseTest extends TestCase {
         Identity i = ssn.parse(femaleAged32);
         assertEquals(17, i.age);
     }
+
+    public void testParsingInvalidSsnReturnsNullObject() {
+        String invalidSsn = null;
+        Identity i = ssn.parse(invalidSsn);
+        assertEquals(false, i.isValid);
+    }
+
 }
