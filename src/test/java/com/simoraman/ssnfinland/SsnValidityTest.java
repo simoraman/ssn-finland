@@ -4,36 +4,25 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-/**
- * Unit test for simple SsnFinland.
- */
 public class SsnValidityTest
-    extends TestCase
-{
+        extends TestCase {
     private SsnFinland ssn;
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public SsnValidityTest(String testName )
-    {
-        super( testName );
+
+    public SsnValidityTest(String testName) {
+        super(testName);
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite( SsnValidityTest.class );
+    public static Test suite() {
+        TestSuite suite = new TestSuite(SsnValidityTest.class);
         suite.addTestSuite(SsnParseTest.class);
+        suite.addTestSuite(SsnGenerationTest.class);
         return suite;
     }
 
     protected void setUp() {
         ssn = new SsnFinland();
     }
+
     public void testValidSsn() {
         String validSsn = "090385-2751";
         assertTrue(ssn.isValidSsn(validSsn));

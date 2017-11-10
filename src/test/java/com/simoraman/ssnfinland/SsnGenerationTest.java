@@ -16,4 +16,16 @@ public class SsnGenerationTest extends TestCase {
         Identity i = ssn.parse(generatedSsn);
         assertEquals(18, i.age);
     }
+
+    public void testGenerateSsn21stCentury() {
+        String generatedSsn = ssn.generateWithAge(1);
+        Identity i = ssn.parse(generatedSsn);
+        assertEquals(1, i.age);
+    }
+
+    public void testGenerateSsn19thCentury() {
+        String generatedSsn = ssn.generateWithAge(120);
+        Identity i = ssn.parse(generatedSsn);
+        assertEquals(120, i.age);
+    }
 }

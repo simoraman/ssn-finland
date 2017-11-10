@@ -20,7 +20,7 @@ public class SsnFinland {
 
     public Identity parse(String ssn) {
         boolean isValid = isValidSsn(ssn);
-        if(isValid) {
+        if (isValid) {
             int sexBit = Integer.parseInt(ssn.substring(9, 10));
             String sex = sexBit % 2 == 0 ? "female" : "male";
             LocalDate birthDate = parseDate(ssn);
@@ -36,7 +36,13 @@ public class SsnFinland {
         String individualNumber = "111";
         String lol = birthDatePart + individualNumber;
         char checkSum = getModuloMap().get(Integer.parseInt(lol) % 31);
-        return birthDatePart + "-" + individualNumber + checkSum;
+        String centuryMark = "-";
+        if (birthDate.getYear() > 1999) {
+            centuryMark = "A";
+        } else if (birthDate.getYear() < 1900) {
+            centuryMark = "+";
+        }
+        return birthDatePart + centuryMark + individualNumber + checkSum;
     }
 
     private LocalDate parseDate(String ssn) {
