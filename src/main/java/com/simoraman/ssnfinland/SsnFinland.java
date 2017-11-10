@@ -30,6 +30,15 @@ public class SsnFinland {
         return new Identity(false, null, 0);
     }
 
+    public String generateWithAge(int age) {
+        LocalDate birthDate = LocalDate.now().minusYears(age);
+        String birthDatePart = birthDate.format(DateTimeFormatter.ofPattern("ddMMyy"));
+        String individualNumber = "111";
+        String lol = birthDatePart + individualNumber;
+        char checkSum = getModuloMap().get(Integer.parseInt(lol) % 31);
+        return birthDatePart + "-" + individualNumber + checkSum;
+    }
+
     private LocalDate parseDate(String ssn) {
         char centuryMark = ssn.charAt(6);
         int century = 1900;
