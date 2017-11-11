@@ -19,7 +19,7 @@ public class SsnFinland {
         return extractCheckSum(ssn) == calculateCheckSum(ssn);
     }
 
-    public Identity parse(String ssn) {
+    public static Identity parse(String ssn) {
         boolean isValid = isValidSsn(ssn);
         if (isValid) {
             int sexBit = Integer.parseInt(ssn.substring(9, 10));
@@ -50,7 +50,7 @@ public class SsnFinland {
         return String.format("%03d", randomIndividualNumber);
     }
 
-    private LocalDate parseDate(String ssn) {
+    private static LocalDate parseDate(String ssn) {
         char centuryMark = ssn.charAt(6);
         int century = 1900;
         if (centuryMark == '+') {
@@ -68,7 +68,7 @@ public class SsnFinland {
         return parsedDate;
     }
 
-    private int calculateAge(LocalDate birthDate) {
+    private static int calculateAge(LocalDate birthDate) {
         LocalDate now = LocalDate.now();
         return Period.between(birthDate, now).getYears();
     }
