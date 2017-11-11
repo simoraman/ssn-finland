@@ -10,7 +10,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 public class SsnFinland {
-    public boolean isValidSsn(String ssn) {
+    public static boolean isValidSsn(String ssn) {
         if (ssn == null || ssn.isEmpty()) return false;
         if (ssn.length() != 11) return false;
         if (!hasValidCentury(ssn)) return false;
@@ -73,13 +73,13 @@ public class SsnFinland {
         return Period.between(birthDate, now).getYears();
     }
 
-    private boolean hasValidCentury(String ssn) {
+    private static boolean hasValidCentury(String ssn) {
         String whitelist = "+-A";
         char centuryMark = ssn.charAt(6);
         return whitelist.indexOf(centuryMark) >= 0;
     }
 
-    private boolean hasValidDate(String ssn) {
+    private static boolean hasValidDate(String ssn) {
         String datePart = ssn.substring(0, 6);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         try {
@@ -90,7 +90,7 @@ public class SsnFinland {
         return true;
     }
 
-    private char calculateCheckSum(String ssn) {
+    private static char calculateCheckSum(String ssn) {
         String birthDayPart = ssn.substring(0, 6);
         String individualNumber = ssn.substring(7, 10);
 
@@ -99,7 +99,7 @@ public class SsnFinland {
         return getModuloMap().get(ddmmyyzzz % 31);
     }
 
-    private char extractCheckSum(String ssn) {
+    private static char extractCheckSum(String ssn) {
         int checkSumIndex = ssn.length() - 1;
         return ssn.charAt(checkSumIndex);
     }

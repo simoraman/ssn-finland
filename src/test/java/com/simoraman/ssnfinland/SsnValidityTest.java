@@ -6,7 +6,6 @@ import junit.framework.TestSuite;
 
 public class SsnValidityTest
         extends TestCase {
-    private SsnFinland ssn;
 
     public SsnValidityTest(String testName) {
         super(testName);
@@ -19,58 +18,54 @@ public class SsnValidityTest
         return suite;
     }
 
-    protected void setUp() {
-        ssn = new SsnFinland();
-    }
-
     public void testValidSsn() {
         String validSsn = "090385-2751";
-        assertTrue(ssn.isValidSsn(validSsn));
+        assertTrue(SsnFinland.isValidSsn(validSsn));
     }
 
     public void testEmptyStringIsInvalid() {
         String inValidSsn = "";
-        assertFalse(ssn.isValidSsn(inValidSsn));
+        assertFalse(SsnFinland.isValidSsn(inValidSsn));
     }
 
     public void testNullIsInvalid() {
         String lol = null;
-        assertFalse(ssn.isValidSsn(lol));
+        assertFalse(SsnFinland.isValidSsn(lol));
     }
 
     public void testOnlyDateOfBirthIsInvalid() {
         String dateOfBirthOnly = "121289";
-        assertFalse(ssn.isValidSsn(dateOfBirthOnly));
+        assertFalse(SsnFinland.isValidSsn(dateOfBirthOnly));
     }
 
     public void testCalculateCheckSum() {
         String invalidCheckSum = "090385-2752";
-        assertFalse(ssn.isValidSsn(invalidCheckSum));
+        assertFalse(SsnFinland.isValidSsn(invalidCheckSum));
     }
 
     public void testDatePartMustBeValidDate() {
         String invalidDay = "001185-111C";
-        assertFalse(ssn.isValidSsn(invalidDay));
+        assertFalse(SsnFinland.isValidSsn(invalidDay));
 
         invalidDay = "321185-1111";
-        assertFalse(ssn.isValidSsn(invalidDay));
+        assertFalse(SsnFinland.isValidSsn(invalidDay));
 
         invalidDay = "101385-111E";
-        assertFalse(ssn.isValidSsn(invalidDay));
+        assertFalse(SsnFinland.isValidSsn(invalidDay));
 
         invalidDay = "100085-111Y";
-        assertFalse(ssn.isValidSsn(invalidDay));
+        assertFalse(SsnFinland.isValidSsn(invalidDay));
     }
 
     public void testAllowedCenturyMarks() {
         String validSsn = "090385+2751";
-        assertTrue(ssn.isValidSsn(validSsn));
+        assertTrue(SsnFinland.isValidSsn(validSsn));
 
         validSsn = "090385A2751";
-        assertTrue(ssn.isValidSsn(validSsn));
+        assertTrue(SsnFinland.isValidSsn(validSsn));
 
         String invalidCentury = "090385B2751";
-        assertFalse(ssn.isValidSsn(invalidCentury));
+        assertFalse(SsnFinland.isValidSsn(invalidCentury));
     }
 
 }
