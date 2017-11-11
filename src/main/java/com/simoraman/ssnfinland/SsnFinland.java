@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Hashtable;
+import java.util.Random;
 
 public class SsnFinland {
     public boolean isValidSsn(String ssn) {
@@ -33,9 +34,8 @@ public class SsnFinland {
     public String generateWithAge(int age) {
         LocalDate birthDate = LocalDate.now().minusYears(age);
         String birthDatePart = birthDate.format(DateTimeFormatter.ofPattern("ddMMyy"));
-        String individualNumber = "111";
-        String lol = birthDatePart + individualNumber;
-        char checkSum = getModuloMap().get(Integer.parseInt(lol) % 31);
+        String individualNumber = generateIndividualNumber();
+        char checkSum = getModuloMap().get(Integer.parseInt(birthDatePart + individualNumber) % 31);
         String centuryMark = "-";
         if (birthDate.getYear() > 1999) {
             centuryMark = "A";
@@ -43,6 +43,11 @@ public class SsnFinland {
             centuryMark = "+";
         }
         return birthDatePart + centuryMark + individualNumber + checkSum;
+    }
+
+    private String generateIndividualNumber() {
+        int randomIndividualNumber = new Random().nextInt(897) + 2;
+        return String.format("%03d", randomIndividualNumber);
     }
 
     private LocalDate parseDate(String ssn) {
