@@ -31,7 +31,7 @@ public class SsnFinland {
         return new Identity(false, null, 0);
     }
 
-    public String generateWithAge(int age) {
+    public static String generateWithAge(int age) {
         LocalDate birthDate = LocalDate.now().minusYears(age);
         String birthDatePart = birthDate.format(DateTimeFormatter.ofPattern("ddMMyy"));
         String individualNumber = generateIndividualNumber();
@@ -45,7 +45,7 @@ public class SsnFinland {
         return birthDatePart + centuryMark + individualNumber + checkSum;
     }
 
-    private String generateIndividualNumber() {
+    private static String generateIndividualNumber() {
         int randomIndividualNumber = new Random().nextInt(897) + 2;
         return String.format("%03d", randomIndividualNumber);
     }
