@@ -13,10 +13,10 @@ public class SsnFinland {
     public static boolean isValidSsn(String ssn) {
         if (ssn == null || ssn.isEmpty()) return false;
         if (ssn.length() != 11) return false;
-        if (!hasValidCentury(ssn)) return false;
-        if (!hasValidDate(ssn)) return false;
+        if (!hasValidCentury(extractCenturyMark(ssn))) return false;
+        if (!hasValidDate(extractDatePart(ssn))) return false;
 
-        return extractCheckSum(ssn) == calculateCheckSum(ssn);
+        return extractCheckSum(ssn) == calculateCheckSum(extractDatePart(ssn), extractIndividualNumber(ssn));
     }
 
     public static Identity parse(String ssn) {
@@ -34,15 +34,15 @@ public class SsnFinland {
     public static String generateWithAge(int age) {
         LocalDate birthDate = LocalDate.now().minusYears(age);
         String birthDatePart = birthDate.format(DateTimeFormatter.ofPattern("ddMMyy"));
-        String individualNumber = generateIndividualNumber();
-        char checkSum = getModuloMap().get(Integer.parseInt(birthDatePart + individualNumber) % 31);
+        String individualNumberPart = generateIndividualNumber();
+        char checkSum = calculateCheckSum(birthDatePart, individualNumberPart);
         String centuryMark = "-";
         if (birthDate.getYear() > 1999) {
             centuryMark = "A";
         } else if (birthDate.getYear() < 1900) {
             centuryMark = "+";
         }
-        return birthDatePart + centuryMark + individualNumber + checkSum;
+        return birthDatePart + centuryMark + individualNumberPart + checkSum;
     }
 
     private static String generateIndividualNumber() {
@@ -51,7 +51,7 @@ public class SsnFinland {
     }
 
     private static LocalDate parseDate(String ssn) {
-        char centuryMark = ssn.charAt(6);
+        char centuryMark = extractCenturyMark(ssn);
         int century = 1900;
         if (centuryMark == '+') {
             century = 1800;
@@ -63,7 +63,7 @@ public class SsnFinland {
                 .appendValueReduced(ChronoField.YEAR, 2, 2, century)
                 .toFormatter();
 
-        String datePart = ssn.substring(0, 6);
+        String datePart = extractDatePart(ssn);
         LocalDate parsedDate = LocalDate.parse(datePart, formatter);
         return parsedDate;
     }
@@ -73,14 +73,16 @@ public class SsnFinland {
         return Period.between(birthDate, now).getYears();
     }
 
-    private static boolean hasValidCentury(String ssn) {
+    private static boolean hasValidCentury(char centuryMark) {
         String whitelist = "+-A";
-        char centuryMark = ssn.charAt(6);
         return whitelist.indexOf(centuryMark) >= 0;
     }
 
-    private static boolean hasValidDate(String ssn) {
-        String datePart = ssn.substring(0, 6);
+    private static char extractCenturyMark(String ssn) {
+        return ssn.charAt(6);
+    }
+
+    private static boolean hasValidDate(String datePart) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyy");
         try {
             LocalDate.parse(datePart, formatter);
@@ -90,13 +92,17 @@ public class SsnFinland {
         return true;
     }
 
-    private static char calculateCheckSum(String ssn) {
-        String birthDayPart = ssn.substring(0, 6);
-        String individualNumber = ssn.substring(7, 10);
+    private static String extractDatePart(String ssn) {
+        return ssn.substring(0, 6);
+    }
 
+    private static char calculateCheckSum(String birthDayPart, String individualNumber) {
         int ddmmyyzzz = Integer.parseInt(birthDayPart + individualNumber);
-
         return getModuloMap().get(ddmmyyzzz % 31);
+    }
+
+    private static String extractIndividualNumber(String ssn) {
+        return ssn.substring(7, 10);
     }
 
     private static char extractCheckSum(String ssn) {
